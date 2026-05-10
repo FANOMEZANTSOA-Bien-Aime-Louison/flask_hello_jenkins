@@ -20,7 +20,7 @@ spec:
     stage('Test') {
       steps {
         container('python') {
-          dir(flask_app) {
+          dir('flask_app') {
             sh 'pip install -r requirements.txt'
             sh 'python test.py'
           }
