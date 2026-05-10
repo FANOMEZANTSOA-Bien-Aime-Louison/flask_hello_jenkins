@@ -62,7 +62,6 @@ spec:
         container('docker') {
           dir('flask_app') {
             sh 'docker build -t flask_hello:latest .'
-            sh 'docker pushflask_hello:latest'
           }
         }
       }
