@@ -61,8 +61,8 @@ spec:
       steps {
         container('docker') {
           dir('flask_app') {
-            sh 'docker build -t 192.168.49.2:4000/flask_hello:latest .'
-            sh 'docker push 192.168.49.2:4000/flask_hello:latest'
+            sh 'docker build -t flask_hello:latest .'
+            sh 'docker pushflask_hello:latest'
           }
         }
       }

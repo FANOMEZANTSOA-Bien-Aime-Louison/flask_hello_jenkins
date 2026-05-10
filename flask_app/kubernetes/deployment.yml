@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: pythontest
-        image: 192.168.49.2:4000/flask_hello:latest
-        imagePullPolicy: Always
+        image: flask_hello:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
           name: microport
