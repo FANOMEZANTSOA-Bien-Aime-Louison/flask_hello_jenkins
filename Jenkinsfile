@@ -24,7 +24,7 @@ spec:
       mountPath: /var/run/docker.sock
 
   - name: kubectl
-    image: registry.k8s.io/kubectl:v1.29.0
+    image: alpine/k8s:1.29.2
     command:
     - cat
     tty: true
@@ -58,7 +58,7 @@ spec:
       }
     }
 
-    stage('Build and Push') {
+    stage('Build Image') {
       steps {
         container('docker') {
           dir('flask_app') {
@@ -71,6 +71,7 @@ spec:
     stage('Deploy to Kubernetes') {
       steps {
         container('kubectl') {
+          sh 'kubectl get pods'
           dir('flask_app') {
             sh 'kubectl apply -f kubernetes/deployment.yml'
             sh 'kubectl apply -f kubernetes/service.yml'
