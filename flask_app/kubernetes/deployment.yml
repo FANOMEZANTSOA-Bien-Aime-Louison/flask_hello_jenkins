@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pythontest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pythontest
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: pythontest
+    spec:
+      containers:
+      - name: pythontest
+        image: 192.168.49.2:4000/flask_hello:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+          name: microport

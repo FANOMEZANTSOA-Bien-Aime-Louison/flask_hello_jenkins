@@ -1,5 +1,5 @@
 pipeline {
-  agent {
+ agent {
     kubernetes {
       label 'jenkins-agent'
       yaml """
@@ -12,9 +12,30 @@ spec:
     command:
     - cat
     tty: true
+
+  - name: docker
+    image: docker:25
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - name: docker-sock
+      mountPath: /var/run/docker.sock
+
+  - name: kubectl
+    image: bitnami/kubectl:latest
+    command:
+    - cat
+    tty: true
+
+  volumes:
+  - name: docker-sock
+    hostPath:
+      path: /var/run/docker.sock
 """
     }
   }
+
   
   triggers {
     pollSCM('* * * * *')
@@ -28,6 +49,26 @@ spec:
             sh 'pip install -r requirements.txt'
             sh 'python test.py'
           }
+        }
+      }
+    }
+
+    stage('Build and Push') {
+      steps {
+        container('docker') {
+          dir('flask_app') {
+            sh 'docker build -t 192.168.49.2:4000/flask_hello:latest .'
+            sh 'docker push 192.168.49.2:4000/flask_hello'
+          }
+        }
+      }
+    }
+
+    stage('Deploy to Kubernetes') {
+      steps {
+        container('kubectl') {
+          sh 'kubectl apply -f kubernetes/deployment.yml'
+          sh 'kubectl apply -f kubernetes/service.yml'
         }
       }
     }
