@@ -1,5 +1,5 @@
 pipeline {
- agent {
+  agent {
     kubernetes {
       label 'jenkins-agent'
       yaml """
@@ -36,22 +36,23 @@ spec:
     }
   }
 
-  
   triggers {
     pollSCM('* * * * *')
   }
 
   options {
-    timestamps()
     disableConcurrentBuilds()
-}
+  }
+
   stages {
     stage('Test') {
       steps {
         container('python') {
           dir('flask_app') {
-            sh 'pip install -r requirements.txt'
-            sh 'python test.py'
+            wrap([$class: 'TimestamperBuildWrapper']) {
+              sh 'pip install -r requirements.txt'
+              sh 'python test.py'
+            }
           }
         }
       }
@@ -61,8 +62,10 @@ spec:
       steps {
         container('docker') {
           dir('flask_app') {
-            sh 'docker build -t 192.168.49.2:4000/flask_hello:latest .'
-            sh 'docker push 192.168.49.2:4000/flask_hello'
+            wrap([$class: 'TimestamperBuildWrapper']) {
+              sh 'docker build -t 192.168.49.2:4000/flask_hello:latest .'
+              sh 'docker push 192.168.49.2:4000/flask_hello:latest'
+            }
           }
         }
       }
@@ -71,10 +74,13 @@ spec:
     stage('Deploy to Kubernetes') {
       steps {
         container('kubectl') {
-          sh 'kubectl apply -f kubernetes/deployment.yml'
-          sh 'kubectl apply -f kubernetes/service.yml'
+          wrap([$class: 'TimestamperBuildWrapper']) {
+            sh 'kubectl apply -f flask_app/kubernetes/deployment.yml'
+            sh 'kubectl apply -f flask_app/kubernetes/service.yml'
+          }
         }
       }
     }
   }
 }
+
