@@ -41,6 +41,10 @@ spec:
     pollSCM('* * * * *')
   }
   
+  options {
+  timestamps()
+  disableConcurrentBuilds()
+}
   stages {
     stage('Test') {
       steps {
