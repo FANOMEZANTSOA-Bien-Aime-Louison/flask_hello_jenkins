@@ -17,7 +17,7 @@ spec:
   }
   
   triggers {
-    pollSCM('* * * *')
+    pollSCM('* * * * *')
   }
   
   stages {
