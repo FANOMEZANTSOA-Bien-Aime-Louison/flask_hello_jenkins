@@ -15,7 +15,11 @@ spec:
 """
     }
   }
-
+  
+  triggers {
+    pollSCM('* * * *')
+  }
+  
   stages {
     stage('Test') {
       steps {
