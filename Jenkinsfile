@@ -40,10 +40,10 @@ spec:
   triggers {
     pollSCM('* * * * *')
   }
-  
+
   options {
-  timestamps()
-  disableConcurrentBuilds()
+    timestamps()
+    disableConcurrentBuilds()
 }
   stages {
     stage('Test') {
