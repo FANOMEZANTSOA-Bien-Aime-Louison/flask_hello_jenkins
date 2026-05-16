@@ -12,5 +12,10 @@ def hello_world():
 def hello_user(username):
     return f'Hello {username}!\n'
 
+# ✅ Nouvelle route ajoutée via TDD
+@app.route('/feature/<username>')
+def feature_user(username):
+    return f'Feature {username}!\n'
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
