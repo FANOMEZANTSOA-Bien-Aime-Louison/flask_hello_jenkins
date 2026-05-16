@@ -48,7 +48,7 @@ flask_hello_jenkins/
 │ └── service.yml
 │
 └── jenkins_k8s/ # Jenkins Helm configuration
-└── values.yaml
+  └── values.yaml
 
 ---
 
