@@ -12,5 +12,8 @@ def hello_world():
 def hello_user(username):
     return f'Hello {username}!\n'
 
+@app.route('/feature/')
+def hello_user(username):
+    return f'Hello {username}!\n'
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
