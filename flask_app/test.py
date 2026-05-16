@@ -21,10 +21,13 @@ class TestHello(unittest.TestCase):
         name = "Simon"
         rv = self.app.get(f'/hello/{name}')
         self.assertIn(name.encode(), rv.data)
-        
+
+    # ✅ Test ajouté en TDD
     def test_new_route(self):
+        name = "DevOps"
         rv = self.app.get(f'/feature/{name}')
-        self.assertEqual(rv.status, '200 ok')
+        self.assertEqual(rv.status, '200 OK')
+        self.assertIn(b'Feature', rv.data)
 
 if __name__ == '__main__':
     unittest.main()
